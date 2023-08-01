@@ -19,6 +19,11 @@ import CreateCategory from './pages/admin/CreateCategory';
 import CreateProduct from './pages/admin/CreateProduct';
 import Users from './pages/admin/Users';
 import Products from './pages/admin/Products';
+import UpdateProduct from './pages/admin/UpdateProduct';
+import Search from './pages/Search';
+import ProductDetails from './pages/ProductDetails';
+import SingleCategory from './pages/SingleCategory';
+import Cart from './pages/Cart';
 
 
 
@@ -28,6 +33,8 @@ function App() {
       <Routes>
         <Route path='/' element={<Home/>} />
         <Route path='/about' element={<About/>} />
+        <Route path='/search' element={<Search/>} />
+        <Route path='/product/:slug' element={<ProductDetails/>} />
         <Route path='/dashboard' element={<PrivateRoute/>} >
           <Route path='user' element={<Dashboard/>} />
           <Route path='user/orders' element={<Orders/>} />
@@ -37,12 +44,15 @@ function App() {
           <Route path='admin' element={<AdminDashboard/>} />
           <Route path='admin/create-category' element={<CreateCategory/>} />
           <Route path='admin/create-product' element={<CreateProduct/>} />
+          <Route path='admin/update-product/:slug' element={<UpdateProduct/>} />
           <Route path='admin/users' element={<Users/>} />
           <Route path='admin/products' element={<Products/>} />
         </Route>
         <Route path='/contact' element={<Contact/>} />
+        <Route path='/cart' element={<Cart/>} />
         <Route path='/policy' element={<Policy/>} />
-        <Route path='/category' element={<Categories/>} />
+        <Route path='/categories' element={<Categories/>} />
+        <Route path='/category/:slug' element={<SingleCategory/>} />
         <Route path='/register' element={<Register/>} />
         <Route path='/login' element={<Login/>} />
         <Route path='/forgot-pass' element={<ForgotPass/>} />

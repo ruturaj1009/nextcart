@@ -1,22 +1,60 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import Layout from './../../components/Layout/Layout';
 import AdminMenu from './../../components/Layout/AdminMenu';
+import axios from "axios";
+import toast from "react-hot-toast";
+import { Link } from "react-router-dom";
 
 const Products = () => {
+  const [products, setProducts] = useState([]);
+
+  const getAllProducts = async () => {
+    try {
+      const { data } = await axios.get("/api/v1/product/all-product");
+      setProducts(data?.product);
+    } catch (error) {
+      console.log(error);
+      toast.error("Something Went Wrong");
+    }
+  };
+
+  useEffect(() => {
+    getAllProducts();
+  },[]);
+
   return (
-    <Layout>
+    <Layout title={"Dashboard - All Products"}>
       <div className="container-fluid m-3 p-3 dashboard">
-            <div className="row">
-              <div className="col-md-3">
-                <AdminMenu/>
-              </div>
-              <div className="col-md-9">
-                <div className="card w-75 p-2">
-                <h1>create product</h1>
-                </div>
-              </div>
-            </div>
+      <div className="row">
+        <div className="col-md-3">
+          <AdminMenu />
         </div>
+        <div className="col-md-9 ">
+          <h1 className="text-center mb-3">All Products List</h1>
+          <div className="d-flex flex-wrap ">
+            {products?.map((p) => (
+              <Link
+                key={p._id}
+                to={`/dashboard/admin/update-product/${p.slug}`}
+                className="product-link"
+              >
+                <div className="card m-2" style={{ width: "15rem" }}>
+                  <img
+                    src={`/api/v1/product/product-img/${p._id}`}
+                    className="card-img-top"
+                    alt={p.name}
+                  />
+                  <div className="card-body">
+                    <h5 className="card-title">{p.name}</h5>
+                    <p className="card-text">{p.description}</p>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </div>
+      </div>
     </Layout>
   )
 }

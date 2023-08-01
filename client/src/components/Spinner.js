@@ -21,7 +21,7 @@ const Spinner = ({path="login"}) => {
       <div className="spinner-border">
             <span className="visually-hidden">Loading...</span>
         </div>
-        <div classname="text-center" >
+        <div className="text-center" >
             <h1>Redirecting to you in {count} second</h1>
         </div>
         </div>

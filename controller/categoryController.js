@@ -102,6 +102,7 @@ export const deleteCategorycontroller = async(req,res)=>{
         res.status(200).send({
             success:true,
             message:'Category deleted Successfully',
+            category
         })
     } catch (error) {
         console.log(error);
