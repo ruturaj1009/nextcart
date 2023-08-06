@@ -55,8 +55,9 @@ font-family: 'Poppins', sans-serif; */
 /* ############################ Footer ###################### */
 
 .footer {
+  /* margin-bottom: 0px !important; */
   color: white;
-  /* padding: 25px; */
+  padding: 0.1px;
   background: #000000; /* fallback for old browsers */
   background: -webkit-linear-gradient(
     to right,

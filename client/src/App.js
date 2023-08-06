@@ -24,12 +24,15 @@ import Search from './pages/Search';
 import ProductDetails from './pages/ProductDetails';
 import SingleCategory from './pages/SingleCategory';
 import Cart from './pages/Cart';
+import { Toaster } from "react-hot-toast";
+import AdminOrders from './pages/admin/AdminOrders';
 
 
 
 function App() {
   return (
     <>
+      <Toaster/>
       <Routes>
         <Route path='/' element={<Home/>} />
         <Route path='/about' element={<About/>} />
@@ -46,6 +49,7 @@ function App() {
           <Route path='admin/create-product' element={<CreateProduct/>} />
           <Route path='admin/update-product/:slug' element={<UpdateProduct/>} />
           <Route path='admin/users' element={<Users/>} />
+          <Route path='admin/orders' element={<AdminOrders/>} />
           <Route path='admin/products' element={<Products/>} />
         </Route>
         <Route path='/contact' element={<Contact/>} />

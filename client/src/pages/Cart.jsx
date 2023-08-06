@@ -1,19 +1,23 @@
-import React from 'react'
+import React,{useState,useEffect} from 'react';
 import Layout from './../components/Layout/Layout';
 import { useCart } from "../context/cart";
 import { useAuth } from "../context/auth";
 import { useNavigate } from "react-router-dom";
 import "../styles/CartStyles.css";
 import { useRef } from 'react';
-import { Button, Tooltip} from 'antd';
-import {AiOutlinePlus,AiOutlineMinus,AiFillDelete} from 'react-icons/ai';
+import { Button} from 'antd';
+import {AiOutlinePlus, AiOutlineMinus,AiFillDelete} from 'react-icons/ai';
+import DropIn from 'braintree-web-drop-in-react';
+import axios from 'axios';
+import  toast  from 'react-hot-toast';
 
 const Cart = () => {
-    const [auth, setAuth] = useAuth();
+    const [auth] = useAuth();
     const [cart, setCart] = useCart();
-    // const [clientToken, setClientToken] = useState("");
-    // const [instance, setInstance] = useState("");
-    // const [loading, setLoading] = useState(false);
+    const [clientToken, setClientToken] = useState("");
+    const [instance, setInstance] = useState("");
+    const [loading, setLoading] = useState(false);
+    // const [drop,setDrop] = useState(false);
     const navigate = useNavigate();
     const windowSize = useRef([window.innerWidth]);
 
@@ -24,7 +28,9 @@ const Cart = () => {
           let total = 0;
           cart?.map((item) => {
             total = total + item.price;
+            
           });
+          
           return total.toLocaleString("en-IN", {
             style: "currency",
             currency: "INR",
@@ -45,6 +51,43 @@ const Cart = () => {
           console.log(error);
         }
       };
+
+      const getToken = async ()=>{
+        try {
+          const { data } = await axios.get("/api/v1/product/braintree/token");
+          setClientToken(data?.clientToken);
+          
+        } catch (error) {
+          console.log(error)
+        }
+      };
+
+      useEffect(() => {
+        getToken();
+      }, [auth?.token]);
+
+      const handlePayment = async () => {
+        try {
+          setLoading(true);
+          const { nonce } = await instance.requestPaymentMethod();
+          const { data } = await axios.post("/api/v1/product/braintree/payment", {
+            nonce,
+            cart,
+          });
+          setLoading(false);
+          localStorage.removeItem("cart");
+          setCart([]);
+          navigate("/dashboard/user/orders");
+        } catch (error) {
+          console.log(error);
+          setLoading(false);
+        }
+      };
+
+      // const handledrop = () =>{
+      //   setDrop(true);
+      // }
+
   return (
     <Layout>
       <div className=" cart-page">
@@ -74,8 +117,7 @@ const Cart = () => {
                       src={`/api/v1/product/product-img/${p._id}`}
                       className="card-img-top"
                       alt={p.name}
-                      width="100px"
-                      height={"130px"}
+                      style={{minHeight:"140px", maxWidth:"140px"}}
                     />
                   </div>
                   <div className="col-md-4">
@@ -86,7 +128,7 @@ const Cart = () => {
                   <div className="col-md-4 cart-remove-btn flex-column ">
                   <div className='flex-row'>
                   <Button type="primary" shape="circle" icon={<AiOutlinePlus/>}></Button>
-                  {totalPrice()}
+                  {p.price}
                   <Button type="primary" shape="circle" icon={<AiOutlineMinus/>}></Button>
                   </div>
                   <div className='mt-2'>
@@ -137,7 +179,7 @@ const Cart = () => {
                   )}
                 </div>
               )}
-              {/* <div className="mt-2">
+              <div className="mt-2">
                 {!clientToken || !auth?.token || !cart?.length ? (
                   ""
                 ) : (
@@ -148,6 +190,9 @@ const Cart = () => {
                         paypal: {
                           flow: "vault",
                         },
+                        googlePay:{
+                          flow:"vault",
+                        }
                       }}
                       onInstance={(instance) => setInstance(instance)}
                     />
@@ -161,7 +206,7 @@ const Cart = () => {
                     </button>
                   </>
                 )}
-              </div> */}
+              </div>
             </div>
           </div>
         </div>

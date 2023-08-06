@@ -5,6 +5,8 @@ import toast  from 'react-hot-toast';
 import SearchInput from '../Form/Searchinput';
 import useCategory from '../../pages/hooks/useCategory';
 import { useCart } from '../../context/cart';
+import {Badge} from 'antd';
+import {AiOutlineShoppingCart} from 'react-icons/ai';
 
 const Header = () => {
   const[auth,setAuth] = useAuth(); 
@@ -64,9 +66,7 @@ const Header = () => {
                 </ul>
               </li>
 
-        <li className="nav-item">
-          <NavLink to={'/cart'} className="nav-link ">Cart({cart?.length})</NavLink>
-        </li>
+        
 
         {!auth.user ? (
           <>
@@ -92,8 +92,16 @@ const Header = () => {
           </>
         )
         }
-        
+        <li className="nav-item">
+        <NavLink to={'/cart'} className="nav-link ">
+        <Badge size="default" count={cart?.length}>
+            <AiOutlineShoppingCart style={{zoom:"1.8"}}/>
+        </Badge>
+          </NavLink>
+       
+        </li>
       </ul>
+
     </div>
   </div>
 </nav>

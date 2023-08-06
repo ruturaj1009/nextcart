@@ -8,6 +8,8 @@ import Layout from "./../components/Layout/Layout";
 import { AiOutlineReload } from "react-icons/ai";
 import "../styles/Homepage.css";
 import { useCart } from "../context/cart";
+import Slider from "../components/Slider";
+
 
 const Home = () => {
   const navigate = useNavigate();
@@ -48,9 +50,7 @@ const Home = () => {
     }
   };
 
-  useEffect(()=>{
-    getAllProducts();
-  },[]);
+  
 
   const getTotal = async () => {
     try {
@@ -107,23 +107,21 @@ const Home = () => {
     }
   };
 
+
   return (
-    <Layout title={'NextCart | Home'}>
-      <img
-        src="/images/banner.png"
-        className="banner-img"
-        alt="bannerimage"
-        width={"100%"}
-        height={"200px"}
-      />
-      <div className="container-fluid row mt-3 home-page">
-        <div className="col-md-3 filters">
+    <Layout >
+      <div className="mt-4">
+        <Slider/>
+      </div>
+      <div className="container-fluid row mt-3 home-page d-flex">
+        <div className="col-md-3 filters" >
           <h4 className="text-center">Filter By Category</h4>
-          <div className="d-flex flex-column">
+          <div className="d-flex flex-column ">
             {categories?.map((c) => (
               <Checkbox
                 key={c._id}
                 onChange={(e) => handleFilter(e.target.checked, c._id)}
+                style={{marginLeft:"20%"}}
               >
                 {c.name}
               </Checkbox>
@@ -132,7 +130,7 @@ const Home = () => {
           {/* price filter */}
           <h4 className="text-center mt-4">Filter By Price</h4>
           <div className="d-flex flex-column">
-            <Radio.Group onChange={(e) => setRadio(e.target.value)}>
+            <Radio.Group onChange={(e) => setRadio(e.target.value)}style={{marginLeft:"20%"}}>
               {Prices?.map((p) => (
                 <div key={p._id}>
                   <Radio value={p.array}>{p.name}</Radio>
@@ -149,11 +147,13 @@ const Home = () => {
             </button>
           </div>
         </div>
+
+
         <div className="col-md-9 ">
           <h1 className="text-center">All Products</h1>
           <div className="d-flex flex-wrap">
             {products?.map((p) => (
-              <div className="card m-2" key={p._id}>
+              <div className="card m-2" key={p._id} >
                 <img
                   src={`/api/v1/product/product-img/${p._id}`}
                   className="card-img-top"

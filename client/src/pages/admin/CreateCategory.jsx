@@ -87,7 +87,7 @@ const CreateCategory = () => {
 
     return (
       <Layout title={"Dashboard - Create Category"}>
-        <div className="container-fluid m-3 p-3 dashboard">
+        <div className="container-fluid  p-3 dashboard">
             <div className="row">
               <div className="col-md-3">
                 <AdminMenu/>
@@ -113,10 +113,11 @@ const CreateCategory = () => {
                 <tbody>
                   {categories?.map((c) => (
                     <>
-                      <tr>
-                        <td key={c._id}>{c.name}</td>
+                      <tr key={c._id}>
+                        <td>{c.name}</td>
                         <td>
-                          <button
+                        <div key={c._id} >
+                        <button
                             className="btn btn-primary ms-2"
                             onClick={() => {
                               setVisible(true);
@@ -134,6 +135,8 @@ const CreateCategory = () => {
                           >
                             Delete
                           </button>
+                        </div>
+                          
                         </td>
                       </tr>
                     </>
